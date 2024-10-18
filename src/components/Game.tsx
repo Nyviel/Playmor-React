@@ -18,9 +18,9 @@ export const Game = () => {
 	useEffect(() => {
 		try {
 			const getGame = async () => {
-				const response = await fetchGameById(Number(gameId));
-				if (response.ok) {
-					setGame(await response.json());
+				const data = await fetchGameById(Number(gameId));
+				if (data) {
+					setGame(data);
 				} else {
 					console.error("Failed to fetch game of id: " + gameId);
 					toast.error(

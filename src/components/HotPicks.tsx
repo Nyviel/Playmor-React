@@ -6,18 +6,20 @@ import { toast } from "react-toastify";
 import { IGame } from "../interfaces/game";
 import { API } from "../utilities/constants";
 import { fetchHotPicks } from "../services/gameService";
+import { Spinner } from "./Spinner";
 
 export const HotPicks = () => {
 	const [hotPicks, setHotPicks] = useState<IGame[]>();
+	const [loading, setLoading] = useState(true);
 	const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
 	useEffect(() => {
 		const getHotPicks = async () => {
 			try {
-				const response = await fetchHotPicks();
-				if (response.ok) {
+				const data = await fetchHotPicks();
+				if (data) {
 					setHotPicks(
-						(await response.json())
+						data
 							.sort(() => Math.random() - Math.random())
 							.splice(0, 3)
 					);
@@ -27,6 +29,8 @@ export const HotPicks = () => {
 			} catch (error) {
 				console.error(`Failed to fetch hot picks: ${error}`);
 				toast.error(`Failed to fetch hot picks: ${error}`);
+			} finally {
+				setLoading(false);
 			}
 		};
 		getHotPicks();
@@ -83,32 +87,41 @@ export const HotPicks = () => {
 	};
 
 	return (
-		<section>
-			<h2 className="text-3xl mt-4 font-bold text-white">
-				Current hot picks
-			</h2>
+		<>
+			{!loading && hotPicks ? (
+				<section>
+					<h2 className="text-3xl mt-4 font-bold text-white">
+						Current hot picks
+					</h2>
 
-			<div className="flex gap-12 flex-wrap my-4">
-				{hotPicks?.map((pick, index) => {
-					return (
-						<article key={pick.id}>
-							<Link to={`/game/${pick.id}`}>
-								<div
-									ref={(el) => (cardRefs.current[index] = el)} // Store ref for each card
-									className="h-[650px] w-[450px] border border-violet-500 card"
-								>
-									<img
-										src={`${API}/proxy-image?imageUrl=${encodeURIComponent(
-											pick.cover
-										)}`}
-										alt=""
-									/>
-								</div>
-							</Link>
-						</article>
-					);
-				})}
-			</div>
-		</section>
+					<div className="flex gap-12 flex-wrap my-4">
+						{hotPicks?.map((pick, index) => {
+							return (
+								<article key={pick.id}>
+									<Link to={`/game/${pick.id}`}>
+										<div
+											ref={(el) =>
+												(cardRefs.current[index] = el)
+											} // Store ref for each card
+											className="h-[650px] w-[450px] border border-violet-500 card"
+										>
+											<img
+												src={`${API}/proxy-image?imageUrl=${encodeURIComponent(
+													pick.cover
+												)}`}
+												crossOrigin="anonymous"
+												alt=""
+											/>
+										</div>
+									</Link>
+								</article>
+							);
+						})}
+					</div>
+				</section>
+			) : (
+				<Spinner color="#5539cc" loading={loading} />
+			)}
+		</>
 	);
 };
