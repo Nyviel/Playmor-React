@@ -34,7 +34,7 @@ body::after {
 	border-radius: 50%;
 	filter: blur(150px);
 	opacity: 0.6; /* Slight transparency for softer glow */
-	z-index: -1; /* Make sure circles stay behind content */
+	z-index: -100; /* Make sure circles stay behind content */
 }
 
 body::before {
@@ -48,5 +48,5 @@ body::before {
 	border-radius: 50%;
 	filter: blur(150px);
 	opacity: 0.6; /* Slight transparency for softer glow */
-	z-index: -1; /* Make sure circles stay behind content */
+	z-index: -100; /* Make sure circles stay behind content */
 }
