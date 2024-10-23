@@ -9,6 +9,7 @@ import { GameDetails } from "./GameDetails";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import "github-markdown-css/github-markdown.css";
+import { StoreIconSwitcher } from "./StoreIconSwitcher";
 
 export const Game = () => {
 	const [game, setGame] = useState<IGame | null>(null);
@@ -96,7 +97,11 @@ export const Game = () => {
 													target="_blank"
 													href={link.websiteLink}
 												>
-													{link.websiteName}
+													<StoreIconSwitcher
+														iconName={
+															link.websiteName
+														}
+													/>
 												</a>
 											</li>
 										);
