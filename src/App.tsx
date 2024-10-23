@@ -7,6 +7,7 @@ import { Home } from "./components/Home";
 import { Navigation } from "./components/Navigation";
 import { Footer } from "./components/Footer";
 import { Game } from "./components/Game";
+import { Explore } from "./components/Explore";
 
 const router = createBrowserRouter([
 	{
@@ -17,12 +18,16 @@ const router = createBrowserRouter([
 		path: "game/:gameId",
 		element: <Game />,
 	},
+	{
+		path: "explore",
+		element: <Explore />,
+	},
 ]);
 
 function App() {
 	return (
 		<>
-			<div className="container mx-auto p-10 min-h-screen">
+			<div className="container mx-auto p-10 h-fit">
 				<Navigation />
 				<RouterProvider router={router} />
 			</div>
