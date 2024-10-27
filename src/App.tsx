@@ -3,11 +3,11 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { ToastContainer } from "react-toastify";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Home } from "./components/Home";
+import { Home } from "./components/home/Home";
 import { Navigation } from "./components/Navigation";
 import { Footer } from "./components/Footer";
-import { Game } from "./components/Game";
-import { Explore } from "./components/Explore";
+import { Game } from "./components/game/Game";
+import { Explore } from "./components/explore/Explore";
 
 const router = createBrowserRouter([
 	{
