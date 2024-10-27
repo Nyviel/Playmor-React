@@ -1,6 +1,8 @@
 import { IGame } from "@/interfaces/game";
 import { API } from "../utilities/constants";
 import { IGamePagination } from "@/interfaces/gamePagination";
+import { IQueryParams } from "@/components/explore/Explore";
+import { urlBuilder } from "@/utilities/urlBuilder";
 
 export const fetchHotPicks = async (): Promise<IGame[]> => {
 	const response = await fetch(`${API}/games`);
@@ -55,14 +57,12 @@ export const fetchGamesByReleasedDate = async (
 };
 
 export const fetchGamesPaginated = async (
-	pageNumber: number,
-	sortBy: string,
-	fromDate: string,
-	toDate: string
+	queryParams: IQueryParams
 ): Promise<IGamePagination> => {
-	const response = await fetch(
-		`${API}/games/paginated?pageNumber=${pageNumber}&pageSize=9&sortBy=${sortBy}&fromDate=${fromDate}&toDate=${toDate}`
-	);
+	const urlParamsString = urlBuilder(queryParams);
+
+	const requestURL = `${API}/games/paginated?${urlParamsString}`;
+	const response = await fetch(requestURL);
 
 	if (response.ok) {
 		return response.json();
@@ -71,6 +71,66 @@ export const fetchGamesPaginated = async (
 			"Failed to fetch paginated games" +
 				response.status +
 				response.statusText
+		);
+	}
+};
+
+export const fetchAvailableModes = async (): Promise<string[]> => {
+	const response = await fetch(`${API}/games/available/modes`);
+
+	if (response.ok) {
+		return response.json();
+	} else {
+		throw new Error(
+			"Failed to fetch modes" + response.status + response.statusText
+		);
+	}
+};
+
+export const fetchAvailableGenres = async (): Promise<string[]> => {
+	const response = await fetch(`${API}/games/available/genres`);
+
+	if (response.ok) {
+		return response.json();
+	} else {
+		throw new Error(
+			"Failed to fetch genres" + response.status + response.statusText
+		);
+	}
+};
+
+export const fetchAvailablePlatforms = async (): Promise<string[]> => {
+	const response = await fetch(`${API}/games/available/platforms`);
+
+	if (response.ok) {
+		return response.json();
+	} else {
+		throw new Error(
+			"Failed to fetch platforms" + response.status + response.statusText
+		);
+	}
+};
+
+export const fetchAvailableDevelopers = async (): Promise<string[]> => {
+	const response = await fetch(`${API}/games/available/developers`);
+
+	if (response.ok) {
+		return response.json();
+	} else {
+		throw new Error(
+			"Failed to fetch developers" + response.status + response.statusText
+		);
+	}
+};
+
+export const fetchAvailablePublishers = async (): Promise<string[]> => {
+	const response = await fetch(`${API}/games/available/publishers`);
+
+	if (response.ok) {
+		return response.json();
+	} else {
+		throw new Error(
+			"Failed to fetch publishers" + response.status + response.statusText
 		);
 	}
 };

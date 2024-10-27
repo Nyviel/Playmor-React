@@ -4,7 +4,7 @@ import { API } from "@/utilities/constants";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Spinner } from "./Spinner";
+import { Spinner } from "../utils/Spinner";
 
 export const RecentlyReleased = () => {
 	const [recentGames, setRecentGames] = useState<IGame[]>();

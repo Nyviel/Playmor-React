@@ -4,12 +4,12 @@ import { fetchGameById } from "@/services/gameService";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Spinner } from "./Spinner";
-import { GameDetails } from "./GameDetails";
+import { Spinner } from "../utils/Spinner";
+import { GameDetails } from "../game/GameDetails";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import "github-markdown-css/github-markdown.css";
-import { StoreIconSwitcher } from "./StoreIconSwitcher";
+import { StoreIconSwitcher } from "../utils/StoreIconSwitcher";
 
 export const Game = () => {
 	const [game, setGame] = useState<IGame | null>(null);

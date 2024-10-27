@@ -1,12 +1,12 @@
-import "../assets/css/HotPicks.css";
+import "@/assets/css/HotPicks.css";
 
 import { Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
-import { IGame } from "../interfaces/game";
-import { API } from "../utilities/constants";
-import { fetchHotPicks } from "../services/gameService";
-import { Spinner } from "./Spinner";
+import { IGame } from "@/interfaces/game";
+import { API } from "@/utilities/constants";
+import { fetchHotPicks } from "@/services/gameService";
+import { Spinner } from "@/components/utils/Spinner";
 
 export const HotPicks = () => {
 	const [hotPicks, setHotPicks] = useState<IGame[]>();
