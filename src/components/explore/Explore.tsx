@@ -61,7 +61,6 @@ export const Explore = () => {
 		navigate(`/explore?pageNumber=${cPage}${current}`);
 	};
 
-	// Fetches results on query params change
 	useEffect(() => {
 		try {
 			const getResults = async () => {
@@ -69,13 +68,12 @@ export const Explore = () => {
 				setResults(data.games);
 				setTotalPages(data.totalPages);
 				setTotalRecords(data.totalRecords);
+				setLoading(false);
 			};
 			setLoading(true);
 			getResults();
 		} catch (error) {
 			console.error("Something went wrong fetching results" + error);
-		} finally {
-			setLoading(false);
 		}
 	}, [queryParams]);
 

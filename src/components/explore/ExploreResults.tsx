@@ -7,16 +7,14 @@ export const ExploreResults = ({ results }: { results: IGame[] }) => {
 		<>
 			{results.map((result, index) => {
 				return (
-					<Link
-						to={`/game/${result.id}`}
-						key={index}
-						className="card h-[350px] w-[300px] border border-white"
-					>
-						<img
-							src={result.cover}
-							className="w-full h-full object-cover object-center"
-						/>
-					</Link>
+					<article className="card h-[350px] w-[300px] border border-white">
+						<Link to={`/game/${result.id}`} key={index}>
+							<img
+								src={result.cover}
+								className="w-full h-full object-cover object-center"
+							/>
+						</Link>
+					</article>
 				);
 			})}
 			{!results.length && (
