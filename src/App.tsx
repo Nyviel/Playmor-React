@@ -8,6 +8,8 @@ import { Navigation } from "./components/Navigation";
 import { Footer } from "./components/Footer";
 import { Game } from "./components/game/Game";
 import { Explore } from "./components/explore/Explore";
+import { Login } from "./components/auth/Login";
+import { Register } from "./components/auth/Register";
 
 const router = createBrowserRouter([
 	{
@@ -21,6 +23,14 @@ const router = createBrowserRouter([
 	{
 		path: "explore",
 		element: <Explore />,
+	},
+	{
+		path: "/auth/login",
+		element: <Login />,
+	},
+	{
+		path: "/auth/register",
+		element: <Register />,
 	},
 ]);
 
