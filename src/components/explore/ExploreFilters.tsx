@@ -14,6 +14,7 @@ import MultiSelect from "../ui/custom/multiSelect";
 import { IFilterOptions } from "@/interfaces/filterOptions";
 import { Select } from "../ui/custom/select";
 import { Input } from "../ui/custom/input";
+import { GradientButton } from "../ui/custom/gradientButton";
 
 const sortOptions = [
 	{ label: "Descending by added date", value: "addedDescending" },
@@ -239,12 +240,9 @@ export const ExploreFilters = ({
 					}))}
 				/>
 			</div>
-			<button
-				onClick={onFiltersSubmit}
-				className="rounded-lg mt-3 px-6 py-3 bg-gradient-to-r from-[#5539cc] from-15% to-[#0066cd] backdrop-opacity-50 hover:brightness-110"
-			>
+			<GradientButton onClick={onFiltersSubmit} className="mt-3">
 				Apply filters
-			</button>
+			</GradientButton>
 		</form>
 	);
 };
