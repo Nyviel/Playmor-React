@@ -1,6 +1,7 @@
 import { LogIn, LogOut, Pencil, Search } from "lucide-react";
 import { Separator } from "./ui/separator";
 import { useState } from "react";
+import { PlaymorTitle } from "./utils/PlaymorTitle";
 
 export const Navigation = () => {
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -10,8 +11,7 @@ export const Navigation = () => {
 		<header className="w-full flex items-center bg-transparent">
 			<a href="/" id="logo">
 				<div className="text-3xl">
-					<span className="text-violet-500 font-bold">Play</span>
-					<span className="text-white">Mor</span>
+					<PlaymorTitle />
 				</div>
 			</a>
 			<nav className="relative flex-1">
