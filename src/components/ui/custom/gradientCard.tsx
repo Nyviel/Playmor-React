@@ -19,7 +19,11 @@ export const GradientCard = ({
 					gradientStyle
 				)}
 			></div>
-			<div className={cn("relative", contentStyle)}>{children}</div>
+			<div
+				className={cn("relative bg-slate-950 rounded-lg", contentStyle)}
+			>
+				{children}
+			</div>
 		</section>
 	);
 };

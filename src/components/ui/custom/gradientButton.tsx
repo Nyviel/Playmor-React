@@ -1,12 +1,10 @@
 import { cn } from "@/lib/utils";
 
 export const GradientButton = ({
-	onClick,
 	type = "button",
 	className,
 	children,
 }: {
-	onClick?: CallableFunction;
 	type?: "submit" | "reset" | "button" | undefined;
 	className?: string;
 	children?: React.ReactNode;
@@ -18,7 +16,6 @@ export const GradientButton = ({
 				className
 			)}
 			type={type}
-			onClick={() => onClick}
 		>
 			{children}
 		</button>

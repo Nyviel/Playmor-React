@@ -43,7 +43,7 @@ export const Game = () => {
 	return (
 		<>
 			{!loading && game ? (
-				<section className="flex flex-col">
+				<section className="flex flex-col min-h-screen">
 					<img
 						src={game.artwork}
 						className="banner absolute left-0 top-0 w-full h-[600px] object-cover object-center -z-10 filter blur-[2px] brightness-[50%]"

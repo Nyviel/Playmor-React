@@ -39,18 +39,18 @@ const MultiSelect = ({
 
 	return (
 		<div className="flex flex-col w-full">
-			<label className="pb-1" htmlFor="fromDate">
+			<label className="pb-2" htmlFor="fromDate">
 				{label}
 			</label>
 			<DropdownMenu>
 				<DropdownMenuTrigger asChild>
-					<Button className="w-full bg-[#1e1e1e] flex items-center justify-between break-words whitespace-break-spaces h-fit">
+					<Button className="w-full bg-slate-900 border border-white flex items-center justify-between break-words whitespace-break-spaces h-fit">
 						<p>{placeholder}</p>
 						<ChevronDown className="h-4 w-4 opacity-50" />
 					</Button>
 				</DropdownMenuTrigger>
 				<DropdownMenuContent
-					className="w-[325px] overflow-y-auto h-fit max-h-[400px] bg-[#1e1e1e] text-white"
+					className="w-[325px] overflow-y-auto h-fit max-h-[400px] bg-slate-900 text-white"
 					onCloseAutoFocus={(e) => e.preventDefault()}
 				>
 					{options.map(

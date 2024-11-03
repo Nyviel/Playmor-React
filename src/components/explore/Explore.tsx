@@ -92,14 +92,14 @@ export const Explore = () => {
 				<div className="pb-4">Results ({totalRecords})</div>
 			</div>
 			<div className="grid grid-cols-4 w-full h-full">
-				<div className="flex flex-wrap justify-center p-5 gap-10 col-span-3 border-b bg-white/10 rounded overflow-y-auto">
+				<div className="flex flex-wrap justify-center p-5 gap-10 col-span-3 border-b bg-slate-600/30 rounded overflow-y-auto">
 					{loading && !results.length ? (
 						<Spinner loading={loading} color={"#5539cc"} />
 					) : (
 						<ExploreResults results={results} />
 					)}
 				</div>
-				<div className="col-span-1 border-b border-l bg-white/15 rounded">
+				<div className="col-span-1 border-b border-l bg-slate-800/30 rounded">
 					<ExploreFilters queryParams={queryParams} />
 				</div>
 			</div>

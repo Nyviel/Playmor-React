@@ -14,8 +14,8 @@ export const Input = ({
 	placeholder,
 }: IInputProps) => {
 	return (
-		<div className="flex flex-col w-full">
-			<label className="pb-1" htmlFor={name}>
+		<div className="flex flex-col w-full text-start">
+			<label className="pb-2" htmlFor={name}>
 				{name}
 			</label>
 			<input
@@ -27,7 +27,7 @@ export const Input = ({
 				}}
 				{...(placeholder ? { placeholder } : {})}
 				value={value}
-				className="px-4 py-2 rounded bg-[#1e1e1e]"
+				className="px-4 py-2 rounded bg-slate-900 border border-white placeholder-gray-200"
 			/>
 		</div>
 	);

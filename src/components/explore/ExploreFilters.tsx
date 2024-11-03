@@ -88,13 +88,15 @@ export const ExploreFilters = ({
 	}, []);
 
 	return (
-		<form className="flex flex-col w-full p-4">
-			<Select
-				name="Sort by"
-				value={sortOption}
-				setValue={(newValue: string) => setSortOption(newValue)}
-				options={sortOptions}
-			/>
+		<form onSubmit={onFiltersSubmit} className="flex flex-col w-full p-4">
+			<div className="pb-3 mb-2 border-b border-white">
+				<Select
+					name="Sort by"
+					value={sortOption}
+					setValue={(newValue: string) => setSortOption(newValue)}
+					options={sortOptions}
+				/>
+			</div>
 
 			<div className="pb-3 mb-2 border-b border-white">
 				<div className="flex flex-col 2xl:flex-row gap-2 justify-between">
@@ -240,7 +242,7 @@ export const ExploreFilters = ({
 					}))}
 				/>
 			</div>
-			<GradientButton onClick={onFiltersSubmit} className="mt-3">
+			<GradientButton className="mt-3" type="submit">
 				Apply filters
 			</GradientButton>
 		</form>
