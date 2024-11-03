@@ -43,8 +43,8 @@ export const RecentlyAdded = () => {
 							return (
 								<article key={index}>
 									<Link to={`/game/${game.id}`}>
-										<div className="border-gray-300 text-white grid grid-cols-3 gap-6 bg-[#111] hover:bg-[#222]">
-											<div className="h-[300px] w-[210px] border border-violet-500 card">
+										<div className="border-gray-300 text-white grid grid-cols-1 xl:grid-cols-3 gap-6 bg-[#111] hover:bg-[#222]">
+											<div className="h-[200px] md:h-[300px] w-[200px] md:w-[210px] border border-violet-500 card mx-auto">
 												<img
 													src={`${API}/proxy-image?imageUrl=${encodeURIComponent(
 														game.cover
@@ -58,8 +58,8 @@ export const RecentlyAdded = () => {
 													{game.title}
 												</h3>
 											</div>
-											<div className="flex justify-center items-center">
-												<p className="text-lg pe-4">
+											<div className="flex justify-center items-center ">
+												<p className="text-lg lg:pe-4">
 													{new Date(
 														game.createdAt
 													).toLocaleDateString()}
