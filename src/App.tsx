@@ -10,6 +10,7 @@ import { Game } from "./components/game/Game";
 import { Explore } from "./components/explore/Explore";
 import { Login } from "./components/auth/Login";
 import { Register } from "./components/auth/Register";
+import { UserProvider } from "./components/providers/UserProvider";
 
 const router = createBrowserRouter([
 	{
@@ -36,14 +37,14 @@ const router = createBrowserRouter([
 
 function App() {
 	return (
-		<>
-			<div className="container mx-auto p-10 h-fit">
+		<UserProvider>
+			<div className="container mx-auto p-2 xl:p-10 h-fit">
 				<Navigation />
 				<RouterProvider router={router} />
 			</div>
 			<Footer />
 			<ToastContainer />
-		</>
+		</UserProvider>
 	);
 }
 

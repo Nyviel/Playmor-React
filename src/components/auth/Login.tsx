@@ -1,23 +1,51 @@
 import { FormEvent, useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { PlaymorTitle } from "../utils/PlaymorTitle";
 import { GradientButton } from "../ui/custom/gradientButton";
 import { GradientCard } from "../ui/custom/gradientCard";
+import { toast } from "react-toastify";
+import { login, logout } from "@/services/authService";
+import { Input } from "../ui/custom/input";
+import { fetchUserProfileData } from "@/services/userService";
+import { useUser } from "../hooks/UserHook";
 
 export const Login = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
-	const [error, setError] = useState("");
+	const [error, setError] = useState<string>("");
+	const { loginUser } = useUser();
+
+	const navigate = useNavigate();
 
 	const handleFormSubmit = async (e: FormEvent) => {
 		e.preventDefault();
+
+		try {
+			await login(email, password);
+			const userData = await fetchUserProfileData();
+			if (userData) {
+				toast.success("Logged in successfully");
+				loginUser(userData);
+				navigate("/");
+			} else {
+				toast.error("Failed to login");
+				await logout();
+			}
+		} catch (err) {
+			toast.error(`Failed to login`);
+			let message = err as string;
+			if (err instanceof Error) {
+				message = err.message;
+			}
+			setError(message);
+		}
 	};
 
 	return (
-		<section className="min-h-screen w-full flex justify-center items-start mt-36">
+		<section className="min-h-screen w-full flex justify-center items-start mt-24">
 			<GradientCard
-				parentStyle="w-1/2 h-fit flex justify-center items-start"
+				parentStyle="w-full md:w-3/4 lg:w-1/2 h-fit flex justify-center items-start"
 				gradientStyle="opacity-75"
 				contentStyle="w-full h-full"
 			>
@@ -25,7 +53,7 @@ export const Login = () => {
 					onSubmit={(e) => {
 						handleFormSubmit(e);
 					}}
-					className="w-full p-6 h-fit space-y-8 bg-black rounded-lg"
+					className="w-full p-6 h-fit space-y-8"
 				>
 					<h2 className="text-3xl text-center font-semibold mb-6 text-white">
 						Login to <PlaymorTitle />
@@ -36,33 +64,30 @@ export const Login = () => {
 					</div>
 
 					<div className="mb-4 space-y-4">
-						<input
-							type="email"
-							id="email"
-							name="email"
-							placeholder="Email address..."
-							required
-							onChange={(e) => {
-								setEmail(e.target.value);
+						<Input
+							inputType="email"
+							name="Email"
+							placeholder="Enter your email address..."
+							value={email}
+							setValue={(val: string) => {
+								setEmail(val);
 							}}
-							className="w-full p-2 px-4 rounded-md"
 						/>
-						<input
-							type="password"
-							id="password"
-							name="password"
-							placeholder="Password..."
-							required
-							onChange={(e) => {
-								setPassword(e.target.value);
+
+						<Input
+							inputType="password"
+							name="Password"
+							placeholder="Enter your password..."
+							value={password}
+							setValue={(val: string) => {
+								setPassword(val);
 							}}
-							className="w-full p-2 px-4 rounded-md"
 						/>
 					</div>
 
 					<div className="my-1">
 						{error && (
-							<p className="text-red-300 text-base font-medium">
+							<p className="text-red-400 text-base font-medium">
 								{"Error: " + error}
 							</p>
 						)}

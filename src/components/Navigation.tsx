@@ -1,12 +1,18 @@
-import { LogIn, LogOut, Pencil, Search } from "lucide-react";
+import { LogIn, LogOut, Pencil, Search, User } from "lucide-react";
 import { Separator } from "./ui/separator";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PlaymorTitle } from "./utils/PlaymorTitle";
+import { useUser } from "./hooks/UserHook";
+import { logout } from "@/services/authService";
 
 export const Navigation = () => {
-	const [isAuthenticated, setIsAuthenticated] = useState(false);
 	const [isAdmin, setIsAdmin] = useState(false);
-
+	const [isAuthenticated, setIsAuthenticated] = useState(false);
+	const { user, logoutUser } = useUser();
+	useEffect(() => {
+		setIsAdmin(user?.userRole.toLocaleLowerCase() === "admin");
+		setIsAuthenticated(user !== null);
+	}, [user]);
 	return (
 		<header className="w-full flex items-center bg-transparent">
 			<a href="/" id="logo">
@@ -28,35 +34,36 @@ export const Navigation = () => {
 						style={{ height: "20px" }}
 					/>
 					{isAdmin && (
-						<div>
-							<a
-								href="/dashboard"
-								className="hover:cursor-pointer"
-							>
-								Dashboard
-							</a>
-						</div>
+						<a href="/dashboard" className="hover:cursor-pointer">
+							Dashboard
+						</a>
 					)}
 
 					{isAuthenticated ? (
-						<div>
+						<>
 							<a href="/profile" className="hover:cursor-pointer">
 								Profile
+								<User className="inline ms-2" />
 							</a>
+							<Separator
+								orientation="vertical"
+								style={{ height: "20px" }}
+							/>
 							<a
 								href="#"
-								onClick={() => {
+								onClick={async () => {
+									await logout();
+									logoutUser();
 									setIsAuthenticated(false);
-									// signOut();
 								}}
-								className="hover:cursor-pointer"
+								className="hover:cursor-pointer flex justify-center items-center"
 							>
 								Logout
-								<LogOut className="inline ms-1" />
+								<LogOut className="inline ms-2 mt-1" />
 							</a>
-						</div>
+						</>
 					) : (
-						<div className="flex gap-5 justify-center items-center">
+						<>
 							<a
 								href="/auth/login"
 								className="hover:cursor-pointer"
@@ -75,7 +82,7 @@ export const Navigation = () => {
 								Register
 								<Pencil className="inline ms-1" />
 							</a>
-						</div>
+						</>
 					)}
 				</ul>
 			</nav>

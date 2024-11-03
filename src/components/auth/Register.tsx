@@ -4,6 +4,7 @@ import { FaArrowRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { GradientButton } from "../ui/custom/gradientButton";
 import { GradientCard } from "../ui/custom/gradientCard";
+import { Input } from "../ui/custom/input";
 export const Register = () => {
 	const [fields, setFields] = useState<IUserRegisterFields>({
 		name: "",
@@ -19,9 +20,9 @@ export const Register = () => {
 	};
 
 	return (
-		<section className="min-h-screen w-full flex justify-center items-start mt-36">
+		<section className="min-h-screen w-full flex justify-center items-start mt-24">
 			<GradientCard
-				parentStyle="w-1/2 h-fit flex justify-center items-start"
+				parentStyle="w-full md:w-3/4 lg:w-1/2 h-fit flex justify-center items-start"
 				gradientStyle="opacity-75"
 				contentStyle="w-full h-full"
 			>
@@ -29,7 +30,7 @@ export const Register = () => {
 					onSubmit={(e) => {
 						handleFormSubmit(e);
 					}}
-					className="w-full min-h-3/4 h-fit p-8 rounded-lg bg-black text-center"
+					className="w-full h-fit p-8 text-center"
 				>
 					<h2 className="text-3xl text-center font-semibold mb-6 text-white">
 						Create An Account
@@ -39,60 +40,50 @@ export const Register = () => {
 						Register with your email address
 					</div>
 					<div className="mb-4">
-						<input
-							type="text"
-							name="name"
-							placeholder="User Name..."
-							required
-							onChange={(e) => {
-								setFields({ ...fields, name: e.target.value });
+						<Input
+							inputType="text"
+							name="Username"
+							placeholder="Enter your username..."
+							value={fields.name}
+							setValue={(val: string) => {
+								setFields({ ...fields, name: val });
 							}}
-							className="w-full p-2 px-4 rounded-md"
 						/>
 					</div>
 
 					<div className="mb-4">
-						<input
-							type="email"
-							name="email"
-							placeholder="Email address..."
-							required
-							onChange={(e) => {
-								setFields({ ...fields, email: e.target.value });
+						<Input
+							inputType="email"
+							name="Email"
+							placeholder="Enter your email address..."
+							value={fields.email}
+							setValue={(val: string) => {
+								setFields({ ...fields, email: val });
 							}}
-							className="w-full p-2 px-4 rounded-md"
 						/>
 					</div>
 
 					<div className="mb-4">
-						<input
-							type="password"
-							name="password"
-							placeholder="Password..."
-							required
-							onChange={(e) => {
-								setFields({
-									...fields,
-									password: e.target.value,
-								});
+						<Input
+							inputType="password"
+							name="Password"
+							placeholder="Enter your password..."
+							value={fields.password}
+							setValue={(val: string) => {
+								setFields({ ...fields, password: val });
 							}}
-							className="w-full p-2 px-4 rounded-md"
 						/>
 					</div>
 
 					<div className="mb-4">
-						<input
-							type="password"
-							name="repeatPassword"
-							placeholder="Repeat Password..."
-							required
-							onChange={(e) => {
-								setFields({
-									...fields,
-									repeatPassword: e.target.value,
-								});
+						<Input
+							inputType="password"
+							name="Repeat password"
+							placeholder="Enter your password again..."
+							value={fields.repeatPassword}
+							setValue={(val: string) => {
+								setFields({ ...fields, repeatPassword: val });
 							}}
-							className="w-full p-2 px-4 rounded-md"
 						/>
 					</div>
 					<div className="my-1">
