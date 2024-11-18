@@ -11,6 +11,7 @@ import { Explore } from "./components/explore/Explore";
 import { Login } from "./components/auth/Login";
 import { Register } from "./components/auth/Register";
 import { UserProvider } from "./components/providers/UserProvider";
+import { Profile } from "./components/profile/Profile";
 
 const router = createBrowserRouter([
 	{
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
 	{
 		path: "/auth/register",
 		element: <Register />,
+	},
+	{
+		path: "/profile",
+		element: <Profile />,
 	},
 ]);
 
