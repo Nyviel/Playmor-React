@@ -2,7 +2,7 @@ import { LogIn, LogOut, Pencil, Search, User } from "lucide-react";
 import { Separator } from "./ui/separator";
 import { useEffect, useState } from "react";
 import { PlaymorTitle } from "./utils/PlaymorTitle";
-import { useUser } from "./hooks/UserHook";
+import { useUser } from "../hooks/UserHook";
 import { logout } from "@/services/authService";
 
 export const Navigation = () => {

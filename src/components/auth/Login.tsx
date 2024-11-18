@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import { login, logout } from "@/services/authService";
 import { Input } from "../ui/custom/input";
 import { fetchUserProfileData } from "@/services/userService";
-import { useUser } from "../hooks/UserHook";
+import { useUser } from "../../hooks/UserHook";
 
 export const Login = () => {
 	const [email, setEmail] = useState("");
