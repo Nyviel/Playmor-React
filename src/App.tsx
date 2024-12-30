@@ -1,7 +1,7 @@
 import "./App.css";
 import "react-toastify/dist/ReactToastify.css";
 
-import { ToastContainer } from "react-toastify";
+import { Bounce, ToastContainer } from "react-toastify";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Home } from "./components/home/Home";
 import { Navigation } from "./components/Navigation";
@@ -12,6 +12,7 @@ import { Login } from "./components/auth/Login";
 import { Register } from "./components/auth/Register";
 import { UserProvider } from "./components/providers/UserProvider";
 import { Profile } from "./components/profile/Profile";
+import { Usergames } from "./components/usergames/Usergames";
 
 const router = createBrowserRouter([
 	{
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
 		path: "/profile",
 		element: <Profile />,
 	},
+	{
+		path: "/usergames/:userId",
+		element: <Usergames />,
+	},
 ]);
 
 function App() {
@@ -48,7 +53,19 @@ function App() {
 				<RouterProvider router={router} />
 			</div>
 			<Footer />
-			<ToastContainer />
+			<ToastContainer
+				position="bottom-right"
+				autoClose={5000}
+				hideProgressBar={false}
+				newestOnTop={false}
+				closeOnClick
+				rtl={false}
+				pauseOnFocusLoss
+				draggable
+				pauseOnHover
+				theme="colored"
+				transition={Bounce}
+			/>
 		</UserProvider>
 	);
 }
