@@ -2,7 +2,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { IGame } from "@/interfaces/game";
 import { fetchGameById } from "@/services/gameService";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Spinner } from "../utils/Spinner";
 import { GameDetails } from "../game/GameDetails";
@@ -10,11 +10,56 @@ import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import "github-markdown-css/github-markdown.css";
 import { StoreIconSwitcher } from "../utils/StoreIconSwitcher";
+import { Button } from "../ui/button";
+import { useUser } from "@/hooks/UserHook";
+import {
+	deleteUserGameAsync,
+	fetchUserGameTrackedStatus,
+	postUserGameAsync,
+} from "@/services/userGameService";
+import { Select } from "../ui/custom/select";
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from "@/components/ui/dialog";
+import { DialogClose } from "@radix-ui/react-dialog";
+import { cn } from "@/lib/utils";
+const scores = [
+	{ label: "0", value: "0" },
+	{ label: "1", value: "1" },
+	{ label: "2", value: "2" },
+	{ label: "3", value: "3" },
+	{ label: "4", value: "4" },
+	{ label: "5", value: "5" },
+	{ label: "6", value: "6" },
+	{ label: "7", value: "7" },
+	{ label: "8", value: "8" },
+	{ label: "9", value: "9" },
+	{ label: "10", value: "10" },
+];
+
+const statuses = [
+	{ label: "Planning to play", value: "PlanningToPlay" },
+	{ label: "Playing", value: "Playing" },
+	{ label: "Completed", value: "Completed" },
+	{ label: "Dropped", value: "Dropped" },
+];
 
 export const Game = () => {
 	const [game, setGame] = useState<IGame | null>(null);
+	const [score, setScore] = useState(scores[0].value);
+	const [status, setStatus] = useState(statuses[0].value);
+	const [isTracked, setIsTracked] = useState(false);
+	const [userGameId, setUserGameId] = useState(-1);
 	const [loading, setLoading] = useState(true);
 	const { gameId } = useParams();
+	const { user } = useUser();
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		try {
@@ -40,6 +85,54 @@ export const Game = () => {
 		}
 	}, [gameId]);
 
+	useEffect(() => {
+		if (!user) return;
+		const checkStatus = async () => {
+			const status = await fetchUserGameTrackedStatus(
+				user?.id,
+				Number(gameId)
+			);
+			if (status) {
+				setIsTracked(true);
+				setUserGameId(status.id);
+			}
+		};
+		checkStatus();
+	}, [user, gameId]);
+
+	const addToList = async () => {
+		if (!user) {
+			navigate("/auth/login");
+			return;
+		}
+
+		const res = await postUserGameAsync({
+			gameId: Number(gameId),
+			userId: Number(user.id),
+			score: Number(score),
+			status,
+		});
+
+		if (res) {
+			setUserGameId(res.id);
+			setIsTracked(true);
+			toast.success("Successfully added a new game to your list");
+		}
+	};
+
+	const removeFromList = async () => {
+		if (!user || !gameId) {
+			return;
+		}
+
+		const res = await deleteUserGameAsync(userGameId);
+
+		if (res) {
+			setIsTracked(false);
+			toast.success("Successfully removed game from your list");
+		}
+	};
+
 	return (
 		<>
 			{!loading && game ? (
@@ -55,17 +148,76 @@ export const Game = () => {
 						<p className="text-xl text-gray-200 mb-12">
 							{game.description}
 						</p>
-						<Tabs defaultValue="information" className="w-[100%]">
+						<Dialog>
+							<DialogTrigger asChild>
+								<Button
+									disabled={isTracked}
+									className={cn(
+										isTracked ? "hidden" : "block",
+										"my-4 hover:brightness-125"
+									)}
+								>
+									Add to List
+								</Button>
+							</DialogTrigger>
+							<Button
+								onClick={removeFromList}
+								disabled={!isTracked}
+								className={cn(
+									!isTracked ? "hidden" : "block",
+									"my-4 hover:brightness-125"
+								)}
+							>
+								Remove from List
+							</Button>
+							<DialogContent className="bg-black/90 sm:max-w-[425px]">
+								<DialogHeader>
+									<DialogTitle>
+										Add {game.title} to your list
+									</DialogTitle>
+									<DialogDescription>
+										Select the score before adding the game.
+									</DialogDescription>
+								</DialogHeader>
+								<div className="flex gap-5">
+									<Select
+										name="Score"
+										value={score}
+										setValue={(nV: string) => setScore(nV)}
+										options={scores}
+									/>
+
+									<Select
+										name="Status"
+										value={status}
+										setValue={setStatus}
+										options={statuses}
+									/>
+								</div>
+								<DialogFooter className="flex flex-col sm:justify-start">
+									<DialogClose asChild>
+										<Button
+											onClick={() => addToList()}
+											type="submit"
+										>
+											Save changes
+										</Button>
+									</DialogClose>
+								</DialogFooter>
+							</DialogContent>
+						</Dialog>
+
+						<Tabs defaultValue="details" className="w-[100%]">
 							<TabsList className="bg-black/25 text-white">
-								<TabsTrigger value="information">
-									Information
+								<TabsTrigger value="details">
+									Details
 								</TabsTrigger>
 								<TabsTrigger value="comments">
 									Comments
 								</TabsTrigger>
 								<TabsTrigger value="links"> Links </TabsTrigger>
 							</TabsList>
-							<TabsContent value="information">
+							<TabsContent value="details">
 								<div className="grid grid-cols-3 gap-4 mt-12">
 									<div className="col-span-2">
 										<div className="markdown bg-black/35 text-white px-6 pb-6 rounded-lg border border-white">
