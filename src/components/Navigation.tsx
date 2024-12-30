@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { PlaymorTitle } from "./utils/PlaymorTitle";
 import { useUser } from "../hooks/UserHook";
 import { logout } from "@/services/authService";
+import { toast } from "react-toastify";
 
 export const Navigation = () => {
 	const [isAdmin, setIsAdmin] = useState(false);
@@ -55,6 +56,7 @@ export const Navigation = () => {
 									await logout();
 									logoutUser();
 									setIsAuthenticated(false);
+									toast.success("Logged out successfully");
 								}}
 								className="hover:cursor-pointer flex justify-center items-center"
 							>
