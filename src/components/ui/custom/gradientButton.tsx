@@ -1,13 +1,16 @@
 import { cn } from "@/lib/utils";
+import { MouseEventHandler } from "react";
 
 export const GradientButton = ({
 	type = "button",
 	className,
 	children,
+	onClick,
 }: {
 	type?: "submit" | "reset" | "button" | undefined;
 	className?: string;
 	children?: React.ReactNode;
+	onClick?: MouseEventHandler<HTMLButtonElement> | undefined;
 }) => {
 	return (
 		<button
@@ -16,6 +19,7 @@ export const GradientButton = ({
 				className
 			)}
 			type={type}
+			onClick={onClick}
 		>
 			{children}
 		</button>

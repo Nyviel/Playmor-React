@@ -2,18 +2,43 @@ import defaultUserAvatar from "@/assets/images/resultsnotfound.webp";
 import { GradientButton } from "../ui/custom/gradientButton";
 import { Button } from "../ui/button";
 import { useUser } from "@/hooks/UserHook";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { ProfileStatsCard } from "./ProfileStatsCard";
 import { CARDS } from "@/utilities/constants";
+import { useNavigate } from "react-router-dom";
+import { fetchUserGamesStatisticsAsync } from "@/services/userGameService";
+import { IUserStatistics } from "@/interfaces/userStatistics";
 
 export const Profile = () => {
 	const { user } = useUser();
+	const [statistics, setStatistics] = useState<IUserStatistics>({
+		games: 0,
+		gamesCompleted: 0,
+		gamesInProgress: 0,
+		gamesDropped: 0,
+		averageRating: 0,
+	});
+	const navigate = useNavigate();
+
 	useEffect(() => {
 		if (!user?.id) {
 			toast.error("Not logged in");
+			return;
 		}
+
+		const fetchUserStatistics = async () => {
+			const res = await fetchUserGamesStatisticsAsync(user.id);
+
+			if (res) {
+				setStatistics(res);
+			} else {
+				toast.error("Failed to fetch user stats");
+			}
+		};
+		fetchUserStatistics();
 	}, [user]);
+
 	return (
 		<section className="w-full bg-black/25 flex flex-col my-12 rounded-lg">
 			<div className="flex flex-col h-fit max-h-[450px] pb-4 px-4">
@@ -37,9 +62,7 @@ export const Profile = () => {
 							elit. Reiciendis temporibus sapiente odit asperiores
 							enim at modi voluptas officia? Veniam, temporibus
 							qui a ea blanditiis eligendi ducimus hic quod
-							adipisci earum? Lorem ipsum dolor sit amet
-							consectetur adipisicing elit. Libero, voluptas.
-							Voluptatibus (350)
+							adipisci earum?
 						</p>
 					</div>
 					<div className="px-4">
@@ -62,7 +85,12 @@ export const Profile = () => {
 						<Button className="bg-green-700">
 							Send friend request
 						</Button>
-						<GradientButton className="py-2 font-light">
+						<GradientButton
+							onClick={() => {
+								navigate(`/usergames/${user?.id}`);
+							}}
+							className="py-2 font-light"
+						>
 							Games list
 						</GradientButton>
 					</div>
@@ -74,12 +102,12 @@ export const Profile = () => {
 						{user?.username}'s statistics
 					</h1>
 				</div>
-				<ul className="grid grid-cols-3 grid-rows-2 gap-12 px-8 py-8">
-					{CARDS.map((card) => (
+				<ul className="grid grid-cols-3 gap-12 px-8 py-8">
+					{CARDS.map((card, i) => (
 						<ProfileStatsCard
 							key={card.title + card.value.toString()}
 							title={card.title}
-							value={card.value}
+							value={Object.values(statistics)[i]}
 						/>
 					))}
 				</ul>
