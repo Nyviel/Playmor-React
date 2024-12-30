@@ -103,7 +103,7 @@ export const HotPicks = () => {
 											ref={(el) =>
 												(cardRefs.current[index] = el)
 											} // Store ref for each card
-											className="h-[650px] w-[450px] border border-violet-500 card"
+											className="h-[650px] w-[435px] border border-violet-500 card"
 										>
 											<img
 												src={`${API}/proxy-image?imageUrl=${encodeURIComponent(
