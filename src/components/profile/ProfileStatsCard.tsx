@@ -13,7 +13,7 @@ export const ProfileStatsCard = ({ title, value }: ProfileStatsCardProps) => {
 				gradientStyle="opacity-75"
 				contentStyle="w-full h-full p-4 text-center"
 			>
-				<h4 className="text-lg font-bold border-b border-white pb-2">
+				<h4 className="text-base md:text-lg font-bold border-b border-white pb-2">
 					{title}
 				</h4>
 				<p className="text-lg font-semibold pt-2">{value}</p>

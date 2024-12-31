@@ -41,7 +41,7 @@ export const Profile = () => {
 
 	return (
 		<section className="w-full bg-black/25 flex flex-col my-12 rounded-lg">
-			<div className="flex flex-col h-fit max-h-[450px] pb-4 px-4">
+			<div className="flex flex-col h-fit pb-4 px-4">
 				<div className="my-4 bg-gradient-to-r pb-1 from-[#5539cc] from-15% to-[#0066cd]">
 					<div className="bg-black/75 p-4">
 						<h1 className="text-xl font-semibold">
@@ -49,35 +49,29 @@ export const Profile = () => {
 						</h1>
 					</div>
 				</div>
-				<div className="flex justify-between items-start">
+				<div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-5 text-center gap-5">
 					<img
-						className="w-64 aspect-square rounded-sm border-2 border-[#5539cc]"
+						className="mx-auto w-64 aspect-square rounded-sm border-2 border-[#5539cc]"
 						src={defaultUserAvatar}
 						alt=""
 					/>
-					<div className="px-4 max-w-[300px] overflow-y-auto">
-						<h3 className="text-lg">About me</h3>
+					<div className="px-4">
+						<h3 className="text-lg font-bold">About me</h3>
 						<p>
 							Lorem ipsum, dolor sit amet consectetur adipisicing
 							elit. Reiciendis temporibus sapiente odit asperiores
-							enim at modi voluptas officia? Veniam, temporibus
-							qui a ea blanditiis eligendi ducimus hic quod
-							adipisci earum?
+							enim at modi voluptas officia?
 						</p>
 					</div>
 					<div className="px-4">
-						<h3 className="text-lg">Account created</h3>
+						<h3 className="text-lg font-bold">Account created</h3>
 						<p>{new Date(user?.createdAt || "").toDateString()}</p>
 					</div>
 					<div className="px-4">
-						<h3 className="text-lg">Account id</h3>
-						<p>{user?.id}</p>
-					</div>
-					<div className="px-4">
-						<h3 className="text-lg">Account role</h3>
+						<h3 className="text-lg font-bold">Account role</h3>
 						<p>{user?.userRole}</p>
 					</div>
-					<div className="flex flex-col gap-4">
+					<div className="col-span-1 md:col-span-2 xl:col-span-1 flex flex-col gap-4">
 						<Button className="bg-red-700">Report user</Button>
 						<Button className="bg-violet-600">
 							Send a message
@@ -102,7 +96,7 @@ export const Profile = () => {
 						{user?.username}'s statistics
 					</h1>
 				</div>
-				<ul className="grid grid-cols-3 gap-12 px-8 py-8">
+				<ul className="grid grid-cols-1 md:grid-cols-3 gap-12 px-8 py-8">
 					{CARDS.map((card, i) => (
 						<ProfileStatsCard
 							key={card.title + card.value.toString()}

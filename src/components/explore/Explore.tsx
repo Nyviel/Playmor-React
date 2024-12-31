@@ -8,6 +8,10 @@ import { ExploreFilters } from "./ExploreFilters";
 import { ExploreResultsPagination } from "./ExploreResultsPagination";
 import { ExploreResults } from "./ExploreResults";
 import { Spinner } from "../utils/Spinner";
+import { Collapsible, CollapsibleTrigger } from "../ui/collapsible";
+import { Button } from "../ui/button";
+import { ChevronsUpDown } from "lucide-react";
+import { CollapsibleContent } from "@radix-ui/react-collapsible";
 
 export interface IQueryParams {
 	pageNumber: number;
@@ -24,7 +28,7 @@ export interface IQueryParams {
 
 export const Explore = () => {
 	const [searchParams] = useSearchParams();
-
+	const [isOpen, setIsOpen] = useState(true);
 	const queryParams = useMemo(
 		() => ({
 			pageNumber: Number(searchParams.get("pageNumber")) || 1,
@@ -78,7 +82,7 @@ export const Explore = () => {
 	}, [queryParams]);
 
 	return (
-		<section className="h-screen flex flex-col pb-24">
+		<section className="flex flex-col pb-24">
 			<div className="flex justify-between items-end mt-10 pl-1 border-b border-white/50 w-full">
 				<div className="pb-4">
 					{results.length > 0 && (
@@ -92,15 +96,33 @@ export const Explore = () => {
 				<div className="pb-4">Results ({totalRecords})</div>
 			</div>
 			<div className="grid grid-cols-4 w-full h-full">
-				<div className="flex flex-wrap justify-center p-5 gap-10 col-span-3 border-b bg-slate-600/30 rounded overflow-y-auto">
+				<div className="order-2 flex flex-wrap justify-center p-5 gap-10 col-span-4 lg:col-span-3 border-b bg-slate-600/30 rounded overflow-y-auto">
 					{loading && !results.length ? (
 						<Spinner loading={loading} color={"#5539cc"} />
 					) : (
 						<ExploreResults results={results} />
 					)}
 				</div>
-				<div className="col-span-1 border-b border-l bg-slate-800/30 rounded">
-					<ExploreFilters queryParams={queryParams} />
+
+				<div className="order-1 col-span-4 lg:col-span-1 border-b border-l bg-slate-800/30 rounded">
+					<Collapsible
+						open={isOpen}
+						onOpenChange={setIsOpen}
+						className="w-full h-full"
+					>
+						<div className="flex items-center justify-between my-2 px-4">
+							<h4 className="text-base font-semibold">Filters</h4>
+							<CollapsibleTrigger asChild>
+								<Button variant="ghost" size="sm">
+									<ChevronsUpDown className="h-4 w-4" />
+									<span className="sr-only">Toggle</span>
+								</Button>
+							</CollapsibleTrigger>
+						</div>
+						<CollapsibleContent className="space-y-2">
+							<ExploreFilters queryParams={queryParams} />
+						</CollapsibleContent>
+					</Collapsible>
 				</div>
 			</div>
 		</section>

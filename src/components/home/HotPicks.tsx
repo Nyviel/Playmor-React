@@ -94,7 +94,7 @@ export const HotPicks = () => {
 						Current hot picks
 					</h2>
 
-					<div className="flex gap-12 flex-wrap my-4">
+					<div className="flex justify-center gap-12 flex-wrap my-4">
 						{hotPicks?.map((pick, index) => {
 							return (
 								<article key={pick.id}>

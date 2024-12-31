@@ -99,7 +99,7 @@ export const ExploreFilters = ({
 			</div>
 
 			<div className="pb-3 mb-2 border-b border-white">
-				<div className="flex flex-col 2xl:flex-row gap-2 justify-between">
+				<div className="flex flex-col gap-2 justify-between">
 					<Input
 						name="From"
 						value={filters.fromDate}
