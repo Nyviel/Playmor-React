@@ -29,6 +29,8 @@ import {
 } from "@/components/ui/dialog";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { cn } from "@/lib/utils";
+import { Comment } from "../comments/Comment";
+import { Comments } from "../comments/Comments";
 const scores = [
 	{ label: "0", value: "0" },
 	{ label: "1", value: "1" },
@@ -235,7 +237,7 @@ export const Game = () => {
 								</div>
 							</TabsContent>
 							<TabsContent value="comments">
-								<p>Comments not yet implemented.</p>
+								<Comments gameId={Number(gameId)} />
 							</TabsContent>
 							<TabsContent value="links">
 								<ul className="flex pt-6 gap-8">
