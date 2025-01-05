@@ -6,12 +6,16 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { ProfileStatsCard } from "./ProfileStatsCard";
 import { CARDS } from "@/utilities/constants";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { fetchUserGamesStatisticsAsync } from "@/services/userGameService";
 import { IUserStatistics } from "@/interfaces/userStatistics";
+import { fetchUserById } from "@/services/userService";
+import { IUser } from "@/interfaces/user";
 
 export const Profile = () => {
-	const { user } = useUser();
+	const { user: loggedInUser } = useUser();
+	const [user, setUser] = useState<IUser>();
+	const { userId } = useParams();
 	const [statistics, setStatistics] = useState<IUserStatistics>({
 		games: 0,
 		gamesCompleted: 0,
@@ -22,13 +26,23 @@ export const Profile = () => {
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		if (!user?.id) {
-			toast.error("Not logged in");
+		if (!userId) {
+			toast.error("Invalid user");
 			return;
 		}
 
+		const fetchUserProfile = async () => {
+			const res = await fetchUserById(Number(userId));
+
+			if (res) {
+				setUser(res);
+			} else {
+				toast.error("Failed to get user data");
+			}
+		};
+
 		const fetchUserStatistics = async () => {
-			const res = await fetchUserGamesStatisticsAsync(user.id);
+			const res = await fetchUserGamesStatisticsAsync(Number(userId));
 
 			if (res) {
 				setStatistics(res);
@@ -36,8 +50,8 @@ export const Profile = () => {
 				toast.error("Failed to fetch user stats");
 			}
 		};
-		fetchUserStatistics();
-	}, [user]);
+		Promise.all([fetchUserProfile(), fetchUserStatistics()]);
+	}, [userId]);
 
 	return (
 		<section className="w-full bg-black/25 flex flex-col my-12 rounded-lg">
@@ -72,11 +86,22 @@ export const Profile = () => {
 						<p>{user?.userRole}</p>
 					</div>
 					<div className="col-span-1 md:col-span-2 xl:col-span-1 flex flex-col gap-4">
-						<Button className="bg-red-700">Report user</Button>
-						<Button className="bg-violet-600">
+						<Button
+							disabled={user?.id == loggedInUser?.id}
+							className="bg-red-700"
+						>
+							Report user
+						</Button>
+						<Button
+							disabled={user?.id == loggedInUser?.id}
+							className="bg-violet-600"
+						>
 							Send a message
 						</Button>
-						<Button className="bg-green-700">
+						<Button
+							disabled={user?.id == loggedInUser?.id}
+							className="bg-green-700"
+						>
 							Send friend request
 						</Button>
 						<GradientButton

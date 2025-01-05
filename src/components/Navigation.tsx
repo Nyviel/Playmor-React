@@ -42,7 +42,10 @@ export const Navigation = () => {
 
 					{isAuthenticated ? (
 						<>
-							<a href="/profile" className="hover:cursor-pointer">
+							<a
+								href={`/profile/${user?.id}`}
+								className="hover:cursor-pointer"
+							>
 								Profile
 								<User className="inline ms-2" />
 							</a>
