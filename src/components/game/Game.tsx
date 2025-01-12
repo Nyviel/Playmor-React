@@ -29,7 +29,6 @@ import {
 } from "@/components/ui/dialog";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { cn } from "@/lib/utils";
-import { Comment } from "../comments/Comment";
 import { Comments } from "../comments/Comments";
 const scores = [
 	{ label: "0", value: "0" },
