@@ -15,17 +15,35 @@ export const UserContext = createContext<IUserContextHook>({
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
 	const [user, setUser] = useState<IUser | null>(() => {
-		const storedUser = sessionStorage.getItem("user");
-		return storedUser ? JSON.parse(storedUser) : null;
+		const storedUser = localStorage.getItem("user");
+		let parsedUser = null;
+		if (storedUser) parsedUser = JSON.parse(storedUser);
+		console.log(storedUser, parsedUser);
+		if (parsedUser) {
+			const currentTime = new Date().getTime();
+
+			if (currentTime > parsedUser.expires) {
+				localStorage.removeItem("user");
+				return null;
+			}
+			return parsedUser.userData;
+		}
+		return null;
 	});
 
 	const loginUser = (userData: IUser) => {
-		sessionStorage.setItem("user", JSON.stringify(userData));
+		localStorage.setItem(
+			"user",
+			JSON.stringify({
+				userData,
+				expires: new Date().getTime() + 1000 * 60 * 60 * 23, // 23h
+			})
+		);
 		setUser(userData);
 	};
 
 	const logoutUser = () => {
-		sessionStorage.removeItem("user");
+		localStorage.removeItem("user");
 		setUser(null);
 	};
 
