@@ -1,40 +1,35 @@
-import { IDeal } from "@/interfaces/deal";
 import { cn } from "@/lib/utils";
 import { fetchDeals } from "@/services/dealService";
-import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Spinner } from "../utils/Spinner";
+import { useQuery } from "@tanstack/react-query";
 
 export const FreshDeals = () => {
-	const [deals, setDeals] = useState<IDeal[]>([]);
-	const [loading, setLoading] = useState(true);
+	const {
+		data: deals,
+		error,
+		isLoading,
+	} = useQuery({
+		queryKey: ["freshDeals"],
+		queryFn: () => fetchDeals(8),
+		staleTime: 1000 * 60 * 60 * 24, // 1day
+	});
 
-	useEffect(() => {
-		try {
-			const getDeals = async () => {
-				const newDeals = await fetchDeals(8);
-				if (newDeals && newDeals.length) {
-					setDeals(newDeals);
-				}
-				setLoading(false);
-			};
-			getDeals();
-		} catch (err) {
-			console.error(err);
-			toast.error("Failed to fetch fresh deals, err: " + err);
-		}
-	}, []);
+	if (error) {
+		console.error(error);
+		toast.error("Failed to fetch fresh deals, err: " + error.message);
+	}
 
 	return (
 		<section className="w-full h-full">
 			<h2 className="text-3xl font-bold text-white text-center md:text-left">
 				Fresh deals
 			</h2>
-			{loading ? (
-				<Spinner loading={loading} color="#5539cc" />
+			{isLoading ? (
+				<Spinner loading={isLoading} color="#5539cc" />
 			) : (
 				<div className="grid grid-cols-1 md:grid-cols-10 md:grid-rows-2 gap-x-4 gap-y-8 h-full pb-12 pt-4">
-					{deals.map((deal, index) => {
+					{deals?.map((deal, index) => {
 						return (
 							<article
 								key={index}

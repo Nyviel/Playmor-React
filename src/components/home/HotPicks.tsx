@@ -1,40 +1,22 @@
 import "@/assets/css/HotPicks.css";
 
 import { Link } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
-import { toast } from "react-toastify";
-import { IGame } from "@/interfaces/game";
+import { useEffect, useRef } from "react";
 import { API } from "@/utilities/constants";
 import { fetchHotPicks } from "@/services/gameService";
 import { Spinner } from "@/components/utils/Spinner";
+import { useQuery } from "@tanstack/react-query";
 
 export const HotPicks = () => {
-	const [hotPicks, setHotPicks] = useState<IGame[]>();
-	const [loading, setLoading] = useState(true);
 	const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-	useEffect(() => {
-		const getHotPicks = async () => {
-			try {
-				const data = await fetchHotPicks();
-				if (data) {
-					setHotPicks(
-						data
-							.sort(() => Math.random() - Math.random())
-							.splice(0, 3)
-					);
-				} else {
-					console.error("Failed to fetch hot picks");
-				}
-			} catch (error) {
-				console.error(`Failed to fetch hot picks: ${error}`);
-				toast.error(`Failed to fetch hot picks: ${error}`);
-			} finally {
-				setLoading(false);
-			}
-		};
-		getHotPicks();
-	}, []);
+	const { data, isLoading } = useQuery({
+		queryKey: ["hotPicks"],
+		queryFn: fetchHotPicks,
+		staleTime: 1000 * 60 * 60 * 24, // 1 day
+	});
+
+	const hotPicks = data?.slice(0, 3);
 
 	// Animation handler
 	useEffect(() => {
@@ -88,7 +70,7 @@ export const HotPicks = () => {
 
 	return (
 		<>
-			{!loading && hotPicks ? (
+			{!isLoading && hotPicks ? (
 				<section>
 					<h2 className="text-3xl mt-4 font-bold text-white">
 						Current hot picks
@@ -120,7 +102,7 @@ export const HotPicks = () => {
 					</div>
 				</section>
 			) : (
-				<Spinner color="#5539cc" loading={loading} />
+				<Spinner color="#5539cc" loading={isLoading} />
 			)}
 		</>
 	);

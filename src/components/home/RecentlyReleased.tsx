@@ -1,34 +1,24 @@
-import { IGame } from "@/interfaces/game";
 import { fetchGamesByReleasedDate } from "@/services/gameService";
 import { API } from "@/utilities/constants";
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Spinner } from "../utils/Spinner";
 import { ArrowRight } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
 
 export const RecentlyReleased = () => {
-	const [recentGames, setRecentGames] = useState<IGame[]>();
-	const [loading, setLoading] = useState(true);
+	const { data, error, isLoading } = useQuery({
+		queryKey: ["recentReleases"],
+		queryFn: () => fetchGamesByReleasedDate("desc"),
+		staleTime: 1000 * 60, // 1min
+	});
 
-	useEffect(() => {
-		try {
-			const getRecentGames = async () => {
-				const games = await fetchGamesByReleasedDate("desc");
-				if (games) {
-					setRecentGames(games.slice(0, 5));
-				} else {
-					console.error("Failed to fetch games");
-					toast.error("Failed to fetch recently released games");
-				}
-				setLoading(false);
-			};
-			getRecentGames();
-		} catch (error) {
-			console.error(error);
-			toast.error("Failed to fetch recently released games");
-		}
-	}, []);
+	if (error) {
+		console.error(error);
+		toast.error("Failed to fetch recently released games");
+	}
+
+	const recentGames = data?.slice(0, 10);
 
 	return (
 		<section>
@@ -41,7 +31,7 @@ export const RecentlyReleased = () => {
 				</h2>
 				<ArrowRight size={"2.5rem"} className="inline mt-1 ml-2" />
 			</a>
-			{!loading ? (
+			{!isLoading ? (
 				<div className="flex flex-col gap-12 my-8">
 					{recentGames?.map((game, index) => {
 						return (
@@ -86,7 +76,7 @@ export const RecentlyReleased = () => {
 					})}
 				</div>
 			) : (
-				<Spinner loading={loading} color="#5539cc" />
+				<Spinner loading={isLoading} color="#5539cc" />
 			)}
 		</section>
 	);
