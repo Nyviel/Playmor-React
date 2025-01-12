@@ -17,15 +17,17 @@ export const columns: ColumnDef<IUserGame>[] = [
 		cell: ({ row }) => {
 			const coverUrl = row.original.game.cover;
 			return (
-				<img
-					src={coverUrl}
-					alt="Game Cover"
-					style={{
-						width: "100px",
-						height: "100px",
-						objectFit: "cover",
-					}}
-				/>
+				<a href={`/game/${row.original.game.id}`}>
+					<img
+						src={coverUrl}
+						alt="Game Cover"
+						style={{
+							width: "100px",
+							height: "100px",
+							objectFit: "cover",
+						}}
+					/>
+				</a>
 			);
 		},
 	},
@@ -94,7 +96,7 @@ export const columns: ColumnDef<IUserGame>[] = [
 			const userGameId = row.original.id;
 
 			const handleEdit = () => {
-				console.log("Edit clicked for", row.original);
+				window.location.href = `${window.location.origin}/game/${row.original.game.id}`;
 			};
 
 			const handleDelete = async () => {
