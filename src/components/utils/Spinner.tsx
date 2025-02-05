@@ -1,11 +1,11 @@
 import { PacmanLoader } from "react-spinners";
 
 interface ISpinnerProps {
-	color: string;
+	color?: string;
 	loading: boolean;
 }
 
-export const Spinner = ({ color, loading }: ISpinnerProps) => {
+export const Spinner = ({ color = "#5539cc", loading }: ISpinnerProps) => {
 	return (
 		<PacmanLoader
 			color={color}
