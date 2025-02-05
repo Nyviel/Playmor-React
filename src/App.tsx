@@ -2,53 +2,16 @@ import "./App.css";
 import "react-toastify/dist/ReactToastify.css";
 
 import { Bounce, ToastContainer } from "react-toastify";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Home } from "./components/home/Home";
-import { Navigation } from "./components/Navigation";
-import { Footer } from "./components/Footer";
-import { Game } from "./components/game/Game";
-import { Explore } from "./components/explore/Explore";
-import { Login } from "./components/auth/Login";
-import { Register } from "./components/auth/Register";
-import { UserProvider } from "./components/providers/UserProvider";
-import { Profile } from "./components/profile/Profile";
-import { Usergames } from "./components/usergames/Usergames";
-
-const router = createBrowserRouter([
-	{
-		path: "/",
-		element: <Home />,
-	},
-	{
-		path: "game/:gameId",
-		element: <Game />,
-	},
-	{
-		path: "explore",
-		element: <Explore />,
-	},
-	{
-		path: "/auth/login",
-		element: <Login />,
-	},
-	{
-		path: "/auth/register",
-		element: <Register />,
-	},
-	{
-		path: "/profile/:userId",
-		element: <Profile />,
-	},
-	{
-		path: "/usergames/:userId",
-		element: <Usergames />,
-	},
-]);
+import { RouterProvider } from "react-router-dom";
+import { Navigation } from "./components/navigation/Navigation";
+import { Footer } from "./components/footer/Footer";
+import { AuthProvider } from "./components/providers/AuthProvider";
+import { router } from "./routing";
 
 function App() {
 	return (
-		<UserProvider>
-			<div className="container mx-auto p-2 xl:p-10 h-fit">
+		<AuthProvider>
+			<div className="container mx-auto px-4 md:px-0 p-2 xl:p-10 h-fit">
 				<Navigation />
 				<RouterProvider router={router} />
 			</div>
@@ -66,7 +29,7 @@ function App() {
 				theme="colored"
 				transition={Bounce}
 			/>
-		</UserProvider>
+		</AuthProvider>
 	);
 }
 

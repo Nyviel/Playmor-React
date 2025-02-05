@@ -5,16 +5,14 @@ import { PlaymorTitle } from "../utils/PlaymorTitle";
 import { GradientButton } from "../ui/custom/gradientButton";
 import { GradientCard } from "../ui/custom/gradientCard";
 import { toast } from "react-toastify";
-import { login, logout } from "@/services/authService";
 import { Input } from "../ui/custom/input";
-import { fetchUserProfileData } from "@/services/userService";
-import { useUser } from "../../hooks/UserHook";
+import { useAuth } from "../../hooks/AuthHook";
 
 export const Login = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [error, setError] = useState<string>("");
-	const { loginUser } = useUser();
+	const { loginUser, logoutUser } = useAuth();
 
 	const navigate = useNavigate();
 
@@ -22,15 +20,13 @@ export const Login = () => {
 		e.preventDefault();
 
 		try {
-			await login(email, password);
-			const userData = await fetchUserProfileData();
-			if (userData) {
+			const res = await loginUser(email, password);
+			if (res) {
 				toast.success("Logged in successfully");
-				loginUser(userData);
 				navigate("/");
 			} else {
 				toast.error("Failed to login");
-				await logout();
+				await logoutUser();
 			}
 		} catch (err) {
 			toast.error(`Failed to login`);

@@ -38,15 +38,14 @@ export const logout = async (): Promise<Response> => {
 export const register = async (
 	username: string,
 	email: string,
-	password: string,
-	phoneNumber: string
+	password: string
 ): Promise<Response> => {
 	const response = await fetch(`${API}/auth/register`, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
 		},
-		body: JSON.stringify({ username, email, password, phoneNumber }),
+		body: JSON.stringify({ username, email, password }),
 	});
 
 	if (!response.ok) {

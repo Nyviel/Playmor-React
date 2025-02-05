@@ -1,10 +1,17 @@
 import { IUserRegisterFields } from "@/interfaces/userRegisterFields";
 import { FormEvent, useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { GradientButton } from "../ui/custom/gradientButton";
 import { GradientCard } from "../ui/custom/gradientCard";
 import { Input } from "../ui/custom/input";
+import {
+	EMAIL_MAX_LENGTH,
+	NAME_MAX_LENGTH,
+	PASSWORD_MAX_LENGTH,
+} from "@/utilities/constants";
+import { register } from "@/services/authService";
+import { toast } from "react-toastify";
 export const Register = () => {
 	const [fields, setFields] = useState<IUserRegisterFields>({
 		name: "",
@@ -12,11 +19,52 @@ export const Register = () => {
 		password: "",
 		repeatPassword: "",
 	});
-
-	const [error] = useState("");
+	const [isAwaitingResponse, setIsAwaitingResponse] = useState(false);
+	const [error, setError] = useState("");
+	const navigate = useNavigate();
 
 	const handleFormSubmit = async (e: FormEvent) => {
 		e.preventDefault();
+		setError("");
+
+		const parsedName = fields.name.trim();
+		const parsedEmail = fields.email.trim();
+		const parsedPassword = fields.password.trim();
+		const parsedRepeatPassword = fields.password.trim();
+
+		if (parsedName.length > NAME_MAX_LENGTH) {
+			setError(`Name can't exceed ${NAME_MAX_LENGTH}`);
+		}
+
+		if (parsedEmail.length > EMAIL_MAX_LENGTH) {
+			setError(`Email can't exceed ${EMAIL_MAX_LENGTH}`);
+		}
+
+		if (parsedPassword.length > PASSWORD_MAX_LENGTH) {
+			setError(`Password can't exceed ${PASSWORD_MAX_LENGTH}`);
+		}
+
+		if (parsedPassword != parsedRepeatPassword) {
+			setError("Passwords do not match");
+		}
+
+		if (error) {
+			return;
+		}
+
+		try {
+			setIsAwaitingResponse(true);
+			await register(parsedName, parsedEmail, parsedPassword);
+			toast.success("New user registered successfully!");
+			navigate("/auth/login");
+		} catch (err) {
+			console.error(
+				`Error occured when registering user: ${JSON.stringify(err)}`
+			);
+			toast.error("Failed to register new user.");
+		} finally {
+			setIsAwaitingResponse(false);
+		}
 	};
 
 	return (
@@ -97,6 +145,7 @@ export const Register = () => {
 						<GradientButton
 							className="font-bold mt-5 mb-2 w-full focus:outline-none focus:shadow-outline"
 							type="submit"
+							disabled={isAwaitingResponse}
 						>
 							Submit
 						</GradientButton>
@@ -113,8 +162,3 @@ export const Register = () => {
 		</section>
 	);
 };
-// {/* <div className="w-1/2 h-fit flex justify-center items-start relative">
-// 				{/* Shadow gradient div */}
-// 				<div className="absolute -inset-2 rounded-lg bg-gradient-to-r from-[#5539cc] from-15% to-[#0066cd] opacity-75 blur"></div>
-
-// 			</div> */}
