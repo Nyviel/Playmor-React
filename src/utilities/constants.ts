@@ -7,3 +7,6 @@ export const CARDS = [
 	{ title: "Games dropped", value: 0 },
 	{ title: "Average rating", value: 0 },
 ];
+export const NAME_MAX_LENGTH = 32;
+export const EMAIL_MAX_LENGTH = 64;
+export const PASSWORD_MAX_LENGTH = 64;
