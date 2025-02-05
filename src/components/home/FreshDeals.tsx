@@ -41,14 +41,14 @@ export const FreshDeals = () => {
 										: index === 2
 										? "md:col-start-9 md:col-end-11 md:row-start-1 md:row-end-2  shadow-md shadow-orange-600"
 										: "md:col-span-2 md:row-span-1 shadow-sm shadow-violet-800",
-									"w-full h-full flex flex-col gap-1 justify-center items-center text-white rounded-lg  bg-black/50 hover:bg-black/5"
+									"w-full h-full flex flex-col gap-1 justify-start items-center text-white rounded-lg  bg-black/50 hover:bg-black/5"
 								)}
 							>
 								<img
 									className="w-full h-[100px] object-cover object-center rounded-t-lg"
 									src={deal.thumb}
 								></img>
-								<h3 className="text-lg font-semibold pt-1">
+								<h3 className="text-lg text-center font-semibold pt-1 px-2">
 									{deal.title}
 								</h3>
 								<p>

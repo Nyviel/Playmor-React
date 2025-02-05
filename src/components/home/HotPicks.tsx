@@ -76,7 +76,7 @@ export const HotPicks = () => {
 						Current hot picks
 					</h2>
 
-					<div className="flex justify-center gap-12 flex-wrap my-4">
+					<div className="flex justify-between gap-12 flex-wrap my-4">
 						{hotPicks?.map((pick, index) => {
 							return (
 								<article key={pick.id}>
@@ -85,7 +85,7 @@ export const HotPicks = () => {
 											ref={(el) =>
 												(cardRefs.current[index] = el)
 											} // Store ref for each card
-											className="h-[650px] w-[435px] border border-violet-500 card"
+											className="h-[650px] w-[100%] md:w-[435px] border border-violet-500 card"
 										>
 											<img
 												src={`${API}/proxy-image?imageUrl=${encodeURIComponent(
