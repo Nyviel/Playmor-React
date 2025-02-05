@@ -1,41 +1,53 @@
 import { IComment } from "@/interfaces/comment";
-import { IUser } from "@/interfaces/user";
 import { fetchCommentsByReplyId } from "@/services/commentService";
-import { fetchUserById } from "@/services/userService";
 import { ChevronDownIcon, ThumbsDown, ThumbsUp } from "lucide-react";
 import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
 import { CommentSection } from "./CommentSection";
 import { cn } from "@/lib/utils";
 import { CommentCreate } from "./CommentCreate";
 import DefaultAvatar from "@/assets/images/resultsnotfound.webp";
 
 export const Comment = ({ comment }: { comment: IComment }) => {
-	const [commenter, setCommenter] = useState<IUser>();
 	const [replies, setReplies] = useState<IComment[]>([]);
+	const [score, setScore] = useState(0);
 	const [replyToggled, setReplyToggled] = useState(false);
 	const [toggleReplies, setToggleReplies] = useState(false);
 
 	useEffect(() => {
 		if (!comment) return;
-		const fetchCommenter = async () => {
-			const res = await fetchUserById(comment.commenterId);
-			if (res) {
-				setCommenter(res);
-			} else {
-				toast.error("Failed to fetch comment user information!");
-			}
-		};
-
+		setScore(comment.score);
 		const fetchReplies = async () => {
 			const res = await fetchCommentsByReplyId(comment.id);
 			if (res && res.length) {
 				setReplies(res);
 			}
 		};
-
-		Promise.all([fetchCommenter(), fetchReplies()]);
+		fetchReplies();
 	}, [comment]);
+
+	const onLikeClicked = async () => {
+		// try {
+		// 	const res = await postCommentScore(1, comment.id);
+		// 	if (res) {
+		// 		setScore((prev) => prev + 1);
+		// 	}
+		// } catch (error) {
+		// 	console.error(error);
+		// 	toast.error("Failed to like comment");
+		// }
+	};
+
+	const onDislikeClicked = async () => {
+		// try {
+		// 	const res = await postCommentScore(-1, comment.id);
+		// 	if (res) {
+		// 		setScore((prev) => prev - 1);
+		// 	}
+		// } catch (error) {
+		// 	console.error(error);
+		// 	toast.error("Failed to like comment");
+		// }
+	};
 
 	return (
 		<article className="flex gap-4 my-4">
@@ -46,10 +58,10 @@ export const Comment = ({ comment }: { comment: IComment }) => {
 					className="w-full aspect-square rounded-full"
 				/>
 			</div>
-			<div className="w-11/12 flex flex-col gap-1">
+			<div className="w-11/12 min-h-1/12 flex flex-col justify-between gap-1">
 				<div className="w-full">
-					<a href={`/profile/${commenter?.id}`}>
-						{commenter?.username}
+					<a href={`/profile/${comment.commenter?.id}`}>
+						{comment.commenter?.username}
 					</a>{" "}
 					({new Date(comment.createdAt).toLocaleDateString()})
 				</div>
@@ -58,8 +70,8 @@ export const Comment = ({ comment }: { comment: IComment }) => {
 				</div>
 				<div className="w-full flex gap-8">
 					<div className="flex gap-3 items-center justify-center">
-						<ThumbsUp /> 0
-						<ThumbsDown /> 0
+						<ThumbsUp onClick={onLikeClicked} /> {score}
+						<ThumbsDown onClick={onDislikeClicked} />
 					</div>
 					<div
 						className="text-blue-500 cursor-pointer"
@@ -73,7 +85,7 @@ export const Comment = ({ comment }: { comment: IComment }) => {
 				<div className={cn(replyToggled ? "block" : "hidden")}>
 					<CommentCreate replyId={comment.id} />
 				</div>
-				<div className="">
+				<div className="my-1">
 					<span
 						className={cn(
 							replies.length > 0 ? "block" : "hidden",

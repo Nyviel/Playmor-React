@@ -1,13 +1,32 @@
-import { useUser } from "@/hooks/UserHook";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import DefaultAvatar from "@/assets/images/resultsnotfound.webp";
 import { useRef } from "react";
-import { PostComment } from "@/services/commentService";
+import { postComment } from "@/services/commentService";
 import { toast } from "react-toastify";
+import { useQuery } from "@tanstack/react-query";
+import { IUser } from "@/interfaces/user";
+import { fetchUserProfileData } from "@/services/userService";
 
 export const CommentCreate = ({ replyId }: { replyId: number }) => {
-	const { user } = useUser();
+	const {
+		data: user,
+		isError: isUserError,
+		error: userError,
+	} = useQuery<IUser>({
+		queryKey: ["authUser"],
+		queryFn: fetchUserProfileData,
+	});
+
+	if (isUserError) {
+		toast.error(
+			"Error fetching authorized user. If you're logged in, try relogging or waiting a few minutes."
+		);
+		console.error(
+			`Error querying authUser: ${userError?.name} ${userError?.message}`
+		);
+	}
+
 	const textareaRef = useRef<HTMLTextAreaElement>(null);
 	if (!user) {
 		return (
@@ -38,7 +57,7 @@ export const CommentCreate = ({ replyId }: { replyId: number }) => {
 			const cleaned = raw.trim().slice(0, 500);
 			const gameId = sessionStorage.getItem("commentGameId");
 			try {
-				const res = await PostComment({
+				const res = await postComment({
 					gameId: gameId ? Number(gameId) : 0,
 					replyId,
 					commenterId: user.id,

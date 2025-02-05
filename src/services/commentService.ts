@@ -30,7 +30,7 @@ export const fetchCommentsByReplyId = async (
 	}
 };
 
-export const PostComment = async (
+export const postComment = async (
 	commentPost: ICommentPost
 ): Promise<IComment> => {
 	const res = await fetch(`${API}/comments`, {
@@ -48,3 +48,16 @@ export const PostComment = async (
 		throw new Error(`Failed to post a comment: ${commentPost}`);
 	}
 };
+
+// export const postCommentScore = async (
+// 	change: number,
+// 	commentId: number
+// ): Promise<IComment> => {
+// 	const response = await fetch(`${API}/c`);
+
+// 	if (response.ok) {
+// 		return response.json();
+// 	} else {
+// 		throw new Error("Failed to fetch comment score");
+// 	}
+// };
