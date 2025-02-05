@@ -19,8 +19,9 @@
 }
 
 body {
-	background-color: #111;
-	overflow-x: hidden;
+	background-color: #222;
+	position: relative;
+	overflow-x: hidden; /* Ensure content doesn't overflow */
 }
 
 body::after {
@@ -40,11 +41,11 @@ body::after {
 body::before {
 	content: "";
 	position: absolute;
-	width: 600px;
-	height: 600px;
+	width: 500px;
+	height: 500px;
 	background-color: #0066cd;
 	top: 0px;
-	right: -200px;
+	right: 0px;
 	border-radius: 50%;
 	filter: blur(150px);
 	opacity: 0.6; /* Slight transparency for softer glow */
