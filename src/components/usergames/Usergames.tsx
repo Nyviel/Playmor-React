@@ -1,6 +1,5 @@
 import { DataTable } from "../ui/custom/userGameTableCols";
 import { columns } from "./columns";
-// import { useUser } from "@/hooks/UserHook";
 import { fetchUserGamesByUserIdAsync } from "@/services/userGameService";
 import { useParams } from "react-router-dom";
 import { fetchUserById } from "@/services/userService";
@@ -10,7 +9,6 @@ import { Spinner } from "../utils/Spinner";
 
 export const Usergames = () => {
 	const { userId } = useParams();
-	// const { loggedInUser } = useUser();
 
 	const {
 		data: requestedUser,

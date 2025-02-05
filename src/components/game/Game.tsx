@@ -11,7 +11,6 @@ import remarkGfm from "remark-gfm";
 import "github-markdown-css/github-markdown.css";
 import { StoreIconSwitcher } from "../utils/StoreIconSwitcher";
 import { Button } from "../ui/button";
-import { useUser } from "@/hooks/UserHook";
 import {
 	deleteUserGameAsync,
 	fetchUserGameTrackedStatus,
@@ -30,6 +29,9 @@ import {
 import { DialogClose } from "@radix-ui/react-dialog";
 import { cn } from "@/lib/utils";
 import { Comments } from "../comments/Comments";
+import { useQuery } from "@tanstack/react-query";
+import { IUser } from "@/interfaces/user";
+import { fetchUserProfileData } from "@/services/userService";
 const scores = [
 	{ label: "0", value: "0" },
 	{ label: "1", value: "1" },
@@ -59,8 +61,25 @@ export const Game = () => {
 	const [userGameId, setUserGameId] = useState(-1);
 	const [loading, setLoading] = useState(true);
 	const { gameId } = useParams();
-	const { user } = useUser();
 	const navigate = useNavigate();
+
+	const {
+		data: user,
+		isError: isUserError,
+		error: userError,
+	} = useQuery<IUser>({
+		queryKey: ["loggedInUser"],
+		queryFn: fetchUserProfileData,
+	});
+
+	if (isUserError) {
+		toast.error(
+			"Error fetching authorized user. If you're logged in, try relogging or waiting a few minutes."
+		);
+		console.error(
+			`Error querying authUser: ${userError?.name} ${userError?.message}`
+		);
+	}
 
 	useEffect(() => {
 		try {

@@ -1,0 +1,8 @@
+header {
+	top: 0;
+	transition: backdrop-filter 0.3s ease-in-out;
+}
+
+header.sticky {
+	backdrop-filter: blur(20px);
+}
