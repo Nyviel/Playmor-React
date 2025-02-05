@@ -6,11 +6,13 @@ export const GradientButton = ({
 	className,
 	children,
 	onClick,
+	disabled,
 }: {
 	type?: "submit" | "reset" | "button" | undefined;
 	className?: string;
 	children?: React.ReactNode;
 	onClick?: MouseEventHandler<HTMLButtonElement> | undefined;
+	disabled?: boolean;
 }) => {
 	return (
 		<button
@@ -20,6 +22,7 @@ export const GradientButton = ({
 			)}
 			type={type}
 			onClick={onClick}
+			disabled={disabled}
 		>
 			{children}
 		</button>
