@@ -14,8 +14,8 @@ export const login = async (
 	});
 
 	if (!response.ok) {
-		const errorData = await response.json();
-		throw new Error(errorData.message || `Error: ${response.status}`);
+		const errorData = await response.text();
+		throw new Error(errorData || `Error: ${response.status}`);
 	}
 
 	return response;
@@ -28,11 +28,11 @@ export const logout = async (): Promise<Response> => {
 	});
 
 	if (!response.ok) {
-		const errorData = await response.json();
-		throw new Error(errorData.message || `Error: ${response.status}`);
+		const errorData = await response.text();
+		throw new Error(errorData || `Error: ${response.status}`);
 	}
 
-	return response.json();
+	return response;
 };
 
 export const register = async (
@@ -49,8 +49,8 @@ export const register = async (
 	});
 
 	if (!response.ok) {
-		const errorData = await response.json();
-		throw new Error(errorData.message || `Error: ${response.status}`);
+		const errorData = await response.text();
+		throw new Error(errorData || `Error: ${response.status}`);
 	}
 
 	return response.json();
