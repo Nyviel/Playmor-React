@@ -19,7 +19,7 @@
 }
 
 body {
-	background-color: #222;
+	background-color: #111827;
 	position: relative;
 	overflow-x: hidden; /* Ensure content doesn't overflow */
 }
@@ -29,7 +29,7 @@ body::after {
 	position: absolute;
 	width: 500px;
 	height: 500px;
-	background-color: #5539cc;
+	background-color: hsl(251, 59%, 31%);
 	top: -100px;
 	left: -100px;
 	border-radius: 50%;
@@ -43,7 +43,7 @@ body::before {
 	position: absolute;
 	width: 500px;
 	height: 500px;
-	background-color: #0066cd;
+	background-color: hsl(210, 100%, 20%);
 	top: 0px;
 	right: 0px;
 	border-radius: 50%;
