@@ -141,6 +141,9 @@ export const Profile = () => {
 							<Button
 								disabled={user?.id == authUser?.id || !authUser}
 								className="bg-violet-600"
+								onClick={() =>
+									navigate(`/messages/create/${user?.id}`)
+								}
 							>
 								Send a message
 							</Button>

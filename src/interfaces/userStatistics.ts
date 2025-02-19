@@ -3,5 +3,6 @@ export interface IUserStatistics {
 	gamesInProgress: number;
 	gamesCompleted: number;
 	gamesDropped: number;
+	gamesPlanned: number;
 	averageRating: number;
 }
