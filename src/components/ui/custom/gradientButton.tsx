@@ -17,7 +17,7 @@ export const GradientButton = ({
 	return (
 		<button
 			className={cn(
-				"rounded-lg px-6 py-3 text-white bg-gradient-to-r from-[#5539cc] from-15% to-[#0066cd] backdrop-opacity-50 transition duration-500 hover:brightness-110",
+				"rounded-lg px-6 py-3 text-white bg-gradient-to-r from-[#5539cc] from-15% to-[#0066cd] backdrop-opacity-50 transition duration-500 hover:brightness-110 disabled:from-[#444] disabled:to-[#444] disabled:text-gray-400 disabled:hover:brightness-100",
 				className
 			)}
 			type={type}

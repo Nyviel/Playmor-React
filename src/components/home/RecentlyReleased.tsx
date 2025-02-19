@@ -37,7 +37,7 @@ export const RecentlyReleased = () => {
 						return (
 							<article key={index}>
 								<Link to={`/game/${game.id}`}>
-									<div className="border-gray-300 text-white flex flex-col md:flex-row items-center justify-between w-full rounded-lg gap-6 bg-[#111] hover:bg-[#222]">
+									<div className="border-gray-300 text-white flex flex-col md:flex-row items-center justify-between w-full rounded-lg gap-6 bg-[#111827] hover:outline hover:outline-4 hover:outline-[#333827] hover:bg-[hsl(221,39%,21%)]">
 										<div className="h-[200px] md:h-[300px] w-[200px] md:w-[210px] border border-violet-500 card">
 											<img
 												src={`${API}/proxy-image?imageUrl=${encodeURIComponent(
