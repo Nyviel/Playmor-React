@@ -8,6 +8,9 @@ import { Profile } from "./components/profile/Profile";
 import { Usergames } from "./components/usergames/Usergames";
 import { Notifications } from "./components/notifications/Notifications";
 import { Messages } from "./components/messages/Messages";
+import { MessageCreate } from "./components/messages/MessageCreate";
+import { Message } from "./components/messages/Message";
+import { ProtectedRoute } from "./components/ProtectedRoute";
 
 export const router = createBrowserRouter([
 	{
@@ -39,11 +42,15 @@ export const router = createBrowserRouter([
 		element: <Usergames />,
 	},
 	{
-		path: "/notifications",
-		element: <Notifications />,
-	},
-	{
-		path: "/messages",
-		element: <Messages />,
+		element: <ProtectedRoute />,
+		children: [
+			{ path: "/notifications", element: <Notifications /> },
+			{ path: "/messages", element: <Messages /> },
+			{ path: "/messages/:id", element: <Message /> },
+			{
+				path: "/messages/create/:recipientId",
+				element: <MessageCreate />,
+			},
+		],
 	},
 ]);

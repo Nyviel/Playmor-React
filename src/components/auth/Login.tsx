@@ -12,7 +12,7 @@ export const Login = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [error, setError] = useState<string>("");
-	const { loginUser, logoutUser } = useAuth();
+	const { loginUser } = useAuth();
 
 	const navigate = useNavigate();
 
@@ -26,7 +26,6 @@ export const Login = () => {
 				navigate("/");
 			} else {
 				toast.error("Failed to login");
-				await logoutUser();
 			}
 		} catch (err) {
 			toast.error(`Failed to login`);

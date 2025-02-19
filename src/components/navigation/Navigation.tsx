@@ -21,12 +21,17 @@ import "./Navigation.css";
 export const Navigation = () => {
 	const [isAdmin] = useState(false);
 	const [isMobileToggled, setIsMobileToggled] = useState(false);
+	const [loggedIn, setLoggedIn] = useState(false);
 	const { logoutUser } = useAuth();
 
 	const { data: user } = useQuery<IUser>({
 		queryKey: ["loggedInUser"],
 		queryFn: fetchUserProfileData,
 	});
+
+	useEffect(() => {
+		setLoggedIn(!!user);
+	}, [user]);
 
 	useEffect(() => {
 		const header = document.querySelector("header");
@@ -49,6 +54,15 @@ export const Navigation = () => {
 			}
 		});
 	}, []);
+
+	const signOut = async () => {
+		const res = await logoutUser();
+		if (res) {
+			setLoggedIn(false);
+			window.location.href = "/";
+		}
+		toast.success("Logged out successfully");
+	};
 
 	return (
 		<header className="w-full h-fit z-50 flex items-center bg-transparent py-6">
@@ -83,7 +97,7 @@ export const Navigation = () => {
 							</a>
 						)}
 
-						{user ? (
+						{loggedIn ? (
 							<>
 								<a
 									href={`/notifications`}
@@ -121,12 +135,7 @@ export const Navigation = () => {
 
 								<a
 									href="#"
-									onClick={async () => {
-										logoutUser();
-										toast.success(
-											"Logged out successfully"
-										);
-									}}
+									onClick={signOut}
 									title="Logout"
 									className="hover:cursor-pointer flex justify-center items-center"
 								>
@@ -178,7 +187,7 @@ export const Navigation = () => {
 							</a>
 						)}
 
-						{user ? (
+						{loggedIn ? (
 							<>
 								<a
 									href={`/notifications`}
@@ -215,12 +224,7 @@ export const Navigation = () => {
 								/>
 								<a
 									href="#"
-									onClick={async () => {
-										logoutUser();
-										toast.success(
-											"Logged out successfully"
-										);
-									}}
+									onClick={signOut}
 									className="hover:cursor-pointer flex justify-center items-center"
 								>
 									Logout
